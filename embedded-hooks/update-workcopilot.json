@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "pwsh -NoProfile -File .github/hooks/scripts/check-workcopilot.ps1",
+        "timeout": 10
+      }
+    ]
+  }
+}

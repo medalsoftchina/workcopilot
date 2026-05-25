@@ -1,0 +1,32 @@
+# Brand assets
+**/brand-assets/*.png
+**/brand-assets/*.jpg
+**/brand-assets/*.svg
+!**/brand-assets/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment
+.env
+.env.*
+
+# Output
+output/
+*.pptx
+*.pdf
