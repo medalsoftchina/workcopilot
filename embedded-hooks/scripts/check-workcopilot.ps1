@@ -31,14 +31,59 @@ foreach ($p in $patterns) {
 }
 if (-not $matched) { exit 0 }
 
-# 检查 .workcopilot 是否近期已更新（2 分钟内）
-$workcopilotPath = Join-Path (Get-Location) ".workcopilot" "changelog.md"
-if (Test-Path $workcopilotPath) {
-    $lastWrite = (Get-Item $workcopilotPath).LastWriteTime
-    $elapsed = (Get-Date) - $lastWrite
-    if ($elapsed.TotalMinutes -le 2) {
-        # 刚更新过，放行
+# 仅在仓库存在非 workcopilot 变更、但未同步更新 .workcopilot/docs 时拦截
+$statusLines = @()
+git rev-parse --is-inside-work-tree *> $null
+if ($LASTEXITCODE -eq 0) {
+    $statusLines = @(git status --porcelain 2>$null)
+}
+
+if ($statusLines.Count -gt 0) {
+    $trackedPatterns = @(
+        '^\.workcopilot/',
+        '^docs/README\.md$'
+    )
+
+    $hasTrackedUpdates = $false
+    $hasNonTrackedChanges = $false
+
+    foreach ($line in $statusLines) {
+        if ([string]::IsNullOrWhiteSpace($line) -or $line.Length -lt 4) { continue }
+
+        $pathText = $line.Substring(3).Trim()
+        if ($pathText -match ' -> ') {
+            $pathText = ($pathText -split ' -> ')[-1].Trim()
+        }
+
+        $normalizedPath = $pathText.Replace('\', '/')
+        $isTrackedUpdate = $false
+        foreach ($pattern in $trackedPatterns) {
+            if ($normalizedPath -match $pattern) {
+                $isTrackedUpdate = $true
+                break
+            }
+        }
+
+        if ($isTrackedUpdate) {
+            $hasTrackedUpdates = $true
+        }
+        else {
+            $hasNonTrackedChanges = $true
+        }
+    }
+
+    if (-not $hasNonTrackedChanges -or $hasTrackedUpdates) {
         exit 0
+    }
+}
+else {
+    $workcopilotPath = Join-Path (Get-Location) ".workcopilot" "changelog.md"
+    if (Test-Path $workcopilotPath) {
+        $lastWrite = (Get-Item $workcopilotPath).LastWriteTime
+        $elapsed = (Get-Date) - $lastWrite
+        if ($elapsed.TotalMinutes -le 10) {
+            exit 0
+        }
     }
 }
 

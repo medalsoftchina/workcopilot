@@ -183,7 +183,7 @@ git clone https://github.com/KeatsLee/doa-workcopilot.git
 
 | 分类 | Skill | 功能 |
 |:----:|-------|------|
-| 📄 | `doa-ppt` | HTML → PPTX/PDF 商务演示文稿，多主题 + 截图高保真/可编辑两种模式 |
+| 📄 | `doa-ppt` | HTML → PPTX/PDF 商务演示文稿，统一公司模板 + 截图高保真/可编辑/PDF 三种导出模式 |
 | 📄 | `doa-metting` | 会议纪要生成，输出 PDF |
 | 📄 | `doa-apidoc` | API 接口文档，支持 PDF / Word |
 | 📄 | `doa-quotation` | 项目工时报价 / 敏捷任务拆分 Excel |
@@ -258,9 +258,9 @@ doa-workcopilot/
 
 ```
 embedded-skills/doa-ppt/brand-assets/
-├── Home_Logo.png                  ← 白色 Logo（封面用）
-├── Content_Logo.png               ← 深色 Logo（内容页用）
-└── BackGround_Decoration.png      ← 装饰图（可选）
+├── SoftwareOne.png                ← SoftwareOne Logo（封面/内容页/结尾页通用）
+├── Medaslsoft.png                 ← 微钉科技 Logo（彩色，含中英文图标）
+└── Medaslsoft_Sample.png          ← 微钉小图标（目录页/内容页标题左侧）
 
 embedded-skills/doa-quotation/brand-assets/
 └── company_logo.png               ← 报价单 Logo
